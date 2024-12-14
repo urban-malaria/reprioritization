@@ -26,19 +26,22 @@ variable_relationships <- data.frame(mean_EVI = "direct",
                                      pfpr = "direct", 
                                      tpr = "direct", 
                                      avgRAD = "direct", 
-                                     settlement_type = "direct"
-                                     ,
+                                     settlement_type = "direct",
                                      flood = "direct",
                                      NDWI = "direct",
                                      NDMI  = "direct"
                                      )
 
 
-possible_vars <- c("mean_EVI", "housing_quality", "distance_to_water",
-                   "settlement_type","pfpr", "tpr"
-                   ,
+possible_vars <- c("mean_EVI", 
+                   "housing_quality", 
+                   "distance_to_water",
+                   "settlement_type",
+                   "pfpr", 
+                   "tpr",
                    "flood",
-                   "NDWI", "NDMI"
+                   "NDWI",
+                   "NDMI"
                    )
 
 
@@ -48,9 +51,11 @@ StatesRankings <- list()
 
 for (ii in seq_along(reprioritization_states)){
   
+  #Make it a function if you get the time
+  
      selected_vars <- possible_vars[possible_vars %in%  names(ward_data[[ii]]) == T]
      
-     # state = reprioritization_states[ii]
+    
 
 
       filled_updata <- handle_na_neighbor_mean(data = ward_data[[ii]], 
@@ -64,7 +69,8 @@ for (ii in seq_along(reprioritization_states)){
 
       
       normilized_data <- normalize_data(cleaned_data = filled_updata, 
-                                        # why do we keeping the old datasets  
+                                        # why do we keeping the old datasets 
+                                        # to discuss with @ Bernard
                                         variable_relationships)
       
       
@@ -73,6 +79,9 @@ for (ii in seq_along(reprioritization_states)){
       
       composite_score <- composite_score_models(normalized_data = normilized_data,
                                                 # composite score for different models
+                                                # this function needs updating 
+                                                # need to silence residual out put (increase run time)
+                                                # clean out for loops where possible (increase run time)
                                                 selected_vars = selected_vars,
                                                 shp_data = shapefile[[ii]]) 
       
